@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<style>
+  .title {
+    background-color: orange;
+    width: 300px;
+  }
+
+</style>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    const myId = 'titLe';
+    const myData = "Hello,React";
+
+    // 1、创建虚拟DOM
+    // Good:组件
+    const VDOM = (
+      <h1 id={myId.toLowerCase()} className="title">
+        <span style={{ color: "white" }}>{myData}</span>
+        <Good></Good>
+      </h1>
+    )/* 此处一定不要写引号，因为不是字符串 */
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(VDOM, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>

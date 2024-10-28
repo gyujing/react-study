@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<style>
+  .title {
+    background-color: orange;
+    width: 300px;
+  }
+
+</style>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    const myId = 'titLe';
+    const myData = "Hello,React";
+
+    const people = [
+      '凯瑟琳·约翰逊: 数学家',
+      '马里奥·莫利纳: 化学家',
+      '穆罕默德·阿卜杜勒·萨拉姆: 物理学家',
+      '珀西·莱温·朱利亚: 化学家',
+      '苏布拉马尼扬·钱德拉塞卡: 天体物理学家',
+    ];
+
+    const listItems = people.map((person, i) => <li key={i}>{person}</li>);
+
+    // 1、创建虚拟DOM
+    const VDOM = (
+      <ul>
+        {listItems}
+      </ul>
+    )/* 此处一定不要写引号，因为不是字符串 */
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(VDOM, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>
