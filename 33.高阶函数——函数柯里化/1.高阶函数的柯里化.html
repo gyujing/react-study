@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>受控组件</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    /**
+      高阶函数:如果一个的数符合下面2个规范中的任何一个，那该函数是高阶函数。
+        1.若A函数。接牧的参数是一个函数。那么A就可以称之为高阶函数。
+        2.若A雨数。调用的返网值依然是一个函数，那么A可以称之为高阶函数。
+        常见的商阶函数有: Promise、setTimeout、arr.map()等等
+
+      的数的柯里化:通过函数调用维续返回函数的方式，实现多次接收参数最后统一处的函数编码形式，
+    **/
+    class Demo extends React.Component {
+      state = {
+        name: "",
+        password: ""
+      }
+      // 表单提交回调
+      handleSubmit = (event) => {
+        // 禁止表单默认刷新操作
+        event.preventDefault();
+        let { name, password } = this.state;
+        alert(`表单中姓名为${name}，密码是${password}`)
+      }
+      // 保存用户名到状态中
+      // saveName = (event) => {
+      //   this.setState({ name: event.target.value })
+      // }
+      // // 保存密码到状态中
+      // savePassword = (event) => {
+      //   this.setState({ password: event.target.value })
+      // }
+      saveFormData = (dateType) => {
+        return (event)=>{
+          this.setState({ [dateType]: event.target.value })
+        }
+      }
+      render() {
+        /*
+          1、saveName、savePassword方法重复，想办法合并处理
+          2、this.saveFormData不带（）时，返回的是一个函数，带了（）,返回的是undifined,所以只有初始时执行了saveFormData，onChange后没法执行undifined
+          3、所以需要想办法，this.saveFormData也返回一个函数，onChange就会触发一个函数
+          3、现在this.saveFormData('name')返回renturn的函数，原来his.saveFormData，函数获取到event，所以return也能获取到event
+        */
+        return (
+          <form onSubmit={this.handleSubmit}>
+            姓名： <input onChange={this.saveFormData('name')} type="text" name="name" />
+            密码： <input onChange={this.saveFormData('password')} type="password" name="password" />
+            <button>按钮</button>
+          </form>
+        )
+      }
+    }
+
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(<Demo a="1" b="2" />, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>

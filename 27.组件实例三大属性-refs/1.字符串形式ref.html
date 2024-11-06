@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字符串ref(不推荐使用)</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+   class Demo extends React.Component {
+      showData = ()=>{
+        // console.log(this)
+        let {inputRef} = this.refs;
+        // console.log(inputRef)
+        alert(inputRef.value)
+      }
+      showData2 = ()=>{
+        let {inputRef2} = this.refs;
+        alert(inputRef2.value)
+      }
+      render(){
+        return (
+          <div>
+            <input ref="inputRef" type="text" placeholder="点击按钮提示数据" />&nbsp;
+            <button ref="btnRef" onClick={this.showData}>点我提示左侧的数据</button>&nbsp;
+            <input ref="inputRef2" onBlur={this.showData2} type="text"placeholder="失去焦点提示数据" />
+            </div>
+        )
+      }
+   }
+   
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(<Demo a="1" b="2"/>, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>

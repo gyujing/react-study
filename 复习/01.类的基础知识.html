@@ -29,9 +29,9 @@
     }
 
     class Student extends Person {
-      constructor(name,age,grade){
+      constructor(name, age, grade) {
         // super必须在所有之前
-        super(name,age)
+        super(name, age)
         this.grade = grade;
       }
       // 重写从父类继承的方法
@@ -39,10 +39,33 @@
         //通过Person实例调用speak， this就是Person实例
         console.log(`我叫${this.name}，今年${this.age}岁,今年${this.grade}`);
       }
-      study(){
+      study() {
         console.log("我学习很努力");
       }
     }
+
+    class Car {
+      constructor(name,price){
+        this.name = name
+        this.price = price
+        // this.wheel = 4
+      }
+      // 类中可以直接写赋值语句，如下代码的含义是：给给Car的实例对象添加一个属性，名为a，值为1
+      a = 1
+      wheel = 4
+    }
+
+    const c1 = new Car("宝马",212)
+    console.log(c1); 
+    /**
+     {
+          "a": 1,
+          "wheel": 4,
+          "name": "宝马",
+          "price": 212
+      }
+     */ 
+    
 
     // const p1 = new Person("tom", 12)
     // const p2 = new Person("jack", 14)
@@ -55,10 +78,10 @@
     // p1.speak.call({a:1,b:2}) //修改this调用指向
 
 
-    const s1 = new Student("tom", 12,'高一')
-    console.log(s1);
-    s1.speak()
-    s1.study()
+    // const s1 = new Student("tom", 12,'高一')
+    // console.log(s1);
+    // s1.speak()
+    // s1.study()
   </script>
 </body>
 

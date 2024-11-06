@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>点击事件</title>
+  <title>更改状态</title>
   <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <!-- 生产环境中不建议使用 -->
@@ -24,7 +24,8 @@
         super(props)
         // 存在this，就必须有super
         this.state = {
-          isHot: false
+          isHot: false,
+          wind: "微风"
         }
         // changeWeather 本身绑定在this实例上
         // this.changeWeather原本在原型上的。prototype.changeWeather
@@ -32,17 +33,19 @@
         // bind返回新函数，call直接改变原函数
         this.changeWeather2 = this.changeWeather.bind(this)
       }
+      // render调用几次？ ---- 1+n次，1是初始化那次，n是状态更新的次数
       render() {
         // console.log(this);
-        let { isHot } = this.state;
-        return <h3 onClick={this.changeWeather2}>今天天气很{isHot ? '炎热' : '凉快'}</h3>
+        let { isHot, wind } = this.state;
+        return <h3 onClick={this.changeWeather2}>今天天气很{isHot ? '炎热' : '凉快'}。{wind}</h3>
       }
       changeWeather() {
         // this:undefined，需要拿到Weather的实例对象
         // console.log(this);
         const isHot = this.state.isHot;
         // 严重注意：状态不可直接更改
-        this.state.isHot = !isHot;
+        // this.state.isHot = !isHot;
+        this.setState({ isHot: !isHot })
         console.log(this.state.isHot);
       }
     }

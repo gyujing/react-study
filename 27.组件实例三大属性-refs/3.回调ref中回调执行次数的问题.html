@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    class Demo extends React.Component {
+      state = {isHot:true}
+      showData = () => {
+        let { input1 } = this;
+        alert(input1.value)
+      }
+      changeWeather = ()=>{
+        let {isHot} = this.state;
+        this.setState({isHot:!isHot})
+      }
+      render() {
+        let { isHot } = this.state;
+        return (
+          <div>
+            <h2>今天的天气很{isHot ? "炎热":"凉快"}</h2>
+            <input ref={(currentNode) => {this.input1 = currentNode;console.log("@",currentNode)}} type="text" placeholder="点击按钮提示数据" /><br /><br />
+            <button onClick={this.showData}>点我提示左侧的数据</button>&nbsp;
+            <button onClick={this.changeWeather}>改变天气</button>&nbsp;
+
+          </div>
+        )
+      }
+    }
+
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(<Demo a="1" b="2" />, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>
