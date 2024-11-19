@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生命周期(新版)</title>
+  <script src="https://cdn.staticfile.org/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/17.0.1/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<style>
+  .list {
+    height: 150px;
+    width: 200px;
+    background-color: skyblue;
+    overflow-y: auto;
+  }
+
+  .news {
+    height: 30px;
+  }
+
+</style>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    class NewsList extends React.Component {
+      state = { news: [] }
+
+
+      componentDidMount() {
+        setInterval(() => {
+          let { news } = this.state;
+          let n = "新闻" + (news.length + 1);
+          this.setState({ news: [n, ...news] })
+        }, 1000)
+      }
+
+
+      getSnapshotBeforeUpdate(prevProps, prevState) {
+        // 可以在这里返回任何你想在 componentDidUpdate 中使用的值
+        let height = this.refs.list.scrollHeight;
+        console.log(this.refs.list.scrollHeight);
+        return height;
+      }
+
+      // 组件更新完毕的钩子
+      componentDidUpdate(prevProps, prevState, height) {
+        console.log("pre_height", height);
+        console.log("cur_height", this.refs.list.scrollHeight);
+        // 作用是：新闻在不停增加，但位置停留，方便查看新闻
+        this.refs.list.scrollTop += this.refs.list.scrollHeight - height;
+      }
+
+      render() {
+        let newVodes = this.state.news.map((v, i) => <div className="news" key={i}>{v}</div>)
+        return (
+          <div className="list" ref="list">
+            {newVodes}
+          </div>
+        )
+      }
+    }
+
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(<NewsList />, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>

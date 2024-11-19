@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生命周期(旧版)-父组件render</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    // 生命周期回调函数 <=> 生命周期钩子函数 <=> 生命周期函数 <=> 生命周期函数
+    class A extends React.Component {
+      state = { car: '宝马' }
+
+      changeCar=()=>{
+        this.setState({car: '奥迪'})
+      }
+
+      // 组件将要挂载的钩子
+      componentWillMount() {
+        console.log("A===componentWillMount");
+      }
+
+      // 组件挂载完毕的钩子
+      componentDidMount() {
+        console.log("A===componentDidMount");
+      }
+
+      // 组件将要卸载的钩子
+      componentWillUnmount() {
+        console.log("A===componentWillUnmount");
+      }
+
+      // 控制组件更新的”阀门“
+      shouldComponentUpdate() {
+        console.log("A===shouldComponentUpdate");
+        return true;
+      }
+
+      // 组件将要更新的钩子
+      componentWillUpdate() {
+        console.log("A===componentWillUpdate");
+      }
+
+      // 组件更新完毕的钩子
+      componentDidUpdate() {
+        console.log("A===componentDidUpdate");
+      }
+
+      // 两种场景：初始化渲染、状态更新之后
+      render() {
+        return (
+          <div>
+            <h3>我是A组件</h3>
+            <button onClick={this.changeCar}>换车</button>
+            <B carName={this.state.car}/>
+          </div>
+        )
+      }
+    }
+
+    class B extends React.Component {
+
+      // 第一次不执行
+      componentWillReceiveProps(props){
+        console.log("B===componentWillReceiveProps",props);
+      }
+
+      // 控制组件更新的”阀门“
+      shouldComponentUpdate() {
+        console.log("B===shouldComponentUpdate");
+        return true;
+      }
+
+      // 组件将要更新的钩子
+      componentWillUpdate() {
+        console.log("B===componentWillUpdate");
+      }
+
+      render() {
+        return (
+          <h3>我是B组件,我接收汽车：{this.props.carName}</h3>
+        )
+      }
+    }
+
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(<A />, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>

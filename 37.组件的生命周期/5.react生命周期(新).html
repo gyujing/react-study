@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生命周期(新版)</title>
+  <script src="https://cdn.staticfile.org/react/17.0.1/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/17.0.1/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    class Count extends React.Component {
+      constructor(props) {
+        console.log("Count===constructor");
+        super(props)
+        this.state = {
+          count: 0
+        }
+      }
+
+      // 加1按钮的回调
+      add = () => {
+        let { count } = this.state;
+        this.setState({ count: count + 1 })
+      }
+
+      // 卸载组件按钮的回调
+      death = () => {
+        // 卸载组件
+        ReactDOM.unmountComponentAtNode(document.getElementById("test"))
+      }
+
+      // 强制按钮的回调
+      force = () => {
+        this.forceUpdate()
+      }
+
+      // 使用场景罕见，
+      // 若state的值在任何时候都取决于props
+      static getDerivedStateFromProps(props, state) {
+        // {name: 101}  {count: 1}
+        console.log("Count===getDerivedStateFromProps", props, state);
+        return null
+      }
+
+      // 组件挂载完毕的钩子
+      componentDidMount() {
+        console.log("Count===componentDidMount");
+      }
+
+      // 组件将要卸载的钩子
+      componentWillUnmount() {
+        console.log("Count===componentWillUnmount");
+      }
+
+      // 控制组件更新的”阀门“
+      shouldComponentUpdate() {
+        console.log("Count===shouldComponentUpdate");
+        return true;
+      }
+
+
+      // 初始化不执行，更新阶段
+      getSnapshotBeforeUpdate(prevProps, prevState) {
+        // {name: 101}  {count: 0}
+        console.log("Count===getSnapshotBeforeUpdate", prevProps, prevState);
+        // 可以在这里返回任何你想在 componentDidUpdate 中使用的值
+        return "love";
+      }
+
+
+      // 组件更新完毕的钩子
+      componentDidUpdate(prevProps, prevState, snapshotValue) {
+        // {name: 101}  {count: 0}  love
+        console.log("Count===componentDidUpdate", prevProps, prevState, snapshotValue);
+      }
+
+      // 两种场景：初始化渲染、状态更新之后
+      render() {
+        console.log("Count===render");
+        let { count } = this.state;
+        return (
+          <div>
+            <h3>当前数值是：{count}</h3>
+            <button onClick={this.add}>点我加1</button>
+            <button onClick={this.death}>卸载组件</button><br />
+            <button onClick={this.force}>不改变任何状态下的数据，强制更新一下</button>
+          </div>
+        )
+      }
+    }
+
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(<Count name={101} />, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>

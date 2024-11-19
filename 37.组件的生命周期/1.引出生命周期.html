@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生命周期</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- 生产环境中不建议使用 -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <!-- 容器 -->
+  <div id="test"></div>
+
+  <script type="text/babel">
+    // 生命周期回调函数 <=> 生命周期钩子函数 <=> 生命周期函数 <=> 生命周期函数
+    class Demo extends React.Component {
+      state = {
+        opacity: 1
+      }
+
+      death = () => {
+        // 卸载组件
+        ReactDOM.unmountComponentAtNode(document.getElementById("test"))
+      }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
+      // 组件挂载完毕,初始化渲染后，diyici render后
+      componentDidMount() {
+        // console.log("@")
+        this.timer = setInterval(() => {
+          // debugger
+          let { opacity } = this.state
+          opacity -= 0.1;
+          if (opacity <= 0) opacity = 1;
+          this.setState({ opacity })
+        }, 200)
+      }
+
+      // 组件将要被销毁
+      componentWillUnmount() {
+        // 需要清除，不然组件卸载了还是定时setState()
+        clearInterval(this.timer)
+      }
+
+      // 两种场景：初始化渲染、状态更新之后
+      render() {
+        // console.log("render")
+        return (
+          <div>
+            <h3 style={{ opacity: this.state.opacity }}>React学不会怎么办？</h3>
+            <button onClick={this.death}>我不活了</button>
+          </div>
+        )
+      }
+    }
+
+    //2.渲染虚拟DOM到页面
+    ReactDOM.render(<Demo a="1" b="2" />, document.getElementById("test"))
+  </script>
+
+</body>
+
+</html>
